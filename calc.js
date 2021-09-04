@@ -16,46 +16,85 @@ var operacion = undefined;
 
 //agrgar evento onclick
 
-botonNumeros.forEach(function(boton){
-    boton.addEventListener('click', function(){
+botonNumeros.forEach(function (boton) {
+    boton.addEventListener('click', function () {
         agregarNumero(boton.innerText);
-       // alert(boton.innerText);
+        // alert(boton.innerText);
     })
 
 });
 
-botonOpera.forEach(function(boton){
-    boton.addEventListener('click', function(){
-        selectOperacion(boton.innerText);   
+botonOpera.forEach(function (boton) {
+    boton.addEventListener('click', function () {
+        selectOperacion(boton.innerText);
     })
 });
 
-botonIgual.addEventListener('click', function(){
+botonIgual.addEventListener('click', function () {
     calcular();
     actualizarDisplay();
-          
-   });
 
-   botonDelete.addEventListener('click', function(){
+});
+
+botonDelete.addEventListener('click', function () {
     clear();
     actualizarDisplay();
-          
-   });
 
-   function agregarNumero(num){
-       opeActual =opeActual.toString() + num.toString();
-       actualizarDisplay();
-   }
+});
 
-   function clear(){
-       opeActual = '';
-       opeAnterior= '';
-       operacion = undefined;
-   }
+//seleccionar la operacion
+function selectOperacion(op) {
+    if (opeActual === '') return;
+    if (opeAnterior !== '') {
+        calcular();
+    }
+    operacion = op.toString();
+    opeAnterior = opeActual;
+    opeActual = '';
+}
 
-   function actualizarDisplay(){
-       result.value = opeActual;
-   }
+function calcular() {
+    var calculo;
+    //valores string convertidos a numeros
+    const anterior = parseFloat(opeAnterior);
+    const actual = parseFloat(opeActual);
+    if (isNaN(anterior) || isNaN(actual)) return;
+    switch (operacion) {
+        case '+':
+            calculo = anterior + actual;
+            break;
+        case '-':
+            calculo = anterior - actual;
+            break;
+        case '*':
+            calculo = anterior * actual;
+            break;
+        case '/':
+            calculo = anterior / actual;
+            break;
+        default:
+            return;
+    }
+    opeActual = calculo;
+    operacion = undefined;
+    opeAnterior = '';
+}
 
-   clear();
+
+function agregarNumero(num) {
+    opeActual = opeActual.toString() + num.toString();
+    actualizarDisplay();
+}
+
+function clear() {
+    opeActual = '';
+    opeAnterior = '';
+    operacion = undefined;
+}
+
+function actualizarDisplay() {
+    result.value = opeActual;
+}
+
+clear();
 
